@@ -5,6 +5,7 @@ import time
 import random
 import os
 import re
+import json
 
 
 class forwardMsger:
@@ -47,9 +48,8 @@ class forwardMsger:
         response = self.opener.open(request) 
         print  response
         content = response.read()
-        ofile = open("w.html","w+")  
-        ofile.write(content)  
-        ofile.close()
+        jsonData = json.loads(content)
+        print jsonData['msg'] 
 
 
 

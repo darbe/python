@@ -58,13 +58,20 @@ class SendMsger :
             'pub_type':'dialog',
             "_t":'0' 
         } 
+        pids = ''
         if isimage :
             if len(imagePath) == 0 :
                 print 'image path invaild send image error'
             else:
-                imageid = self.getImageID(imagePath)
-                if imageid :
-                     postData['pic_id'] = imageid
+                images = imagePath.split()
+                for image in images:
+                    imageid = self.getImageID(image)
+                    if imageid :
+                        pids += ' ' + imageid
+                pids = pids.strip()
+                if len(pids) > 0:
+                    print pids
+                    postData['pic_id'] = pids
         formData = urllib.urlencode(postData) 
         request  = urllib2.Request(  
                         url = sendUrl,  
@@ -79,12 +86,12 @@ class SendMsger :
             print 'send fail unknown error'
             return False
         if jsonData['code'] ==  config.SENDSUCC:
-            print '发送成功 msg: ',msg 
+            print 'send ok msg: ',msg 
             return True
         else :
-            print  '发送失败 :' ,jsonData['msg'].split('\n')[2]
+            print jsonData['msg'].split(u'。')[0]+u'。'
+            #print  'send error :' ,jsonData['msg'].split('\n')[2]
 
-           # print jsonData['msg'].split(u'。')[0]+u'。'
             return False
         #ofile = open("send.html","w+")  
         #ofile.write(content)  
