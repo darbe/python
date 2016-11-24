@@ -7,7 +7,8 @@ import os
 import re
 import json
 
-
+import logging
+logger = logging.getLogger("log") 
 class forwardMsger:
     def __init__(self,session):
         self.headers = session.headers
@@ -17,7 +18,7 @@ class forwardMsger:
     def forwardMessge(self , msg, mid):
         randnum =  int( time.time() * 1000)
         forwardUrl = 'http://weibo.com/aj/v6/mblog/forward?ajwvr=6&domain=100505&__rnd='+str(randnum)
-        print forwardUrl
+        #print forwardUrl
         headers = self.headers
         headers['Referer'] = 'http://weibo.com/u/i'+self.uniqueid+'/home?'+self.userDomain[1:self.userDomain.index('&')]
         postData = {  
@@ -44,10 +45,11 @@ class forwardMsger:
                         data = formData,  
                         headers = headers  
                 ) 
-        print request 
+        #print request 
         response = self.opener.open(request) 
-        print  response
+        #print  response
         content = response.read()
+        logger.info ('<------------------forward ok------------------>')
         jsonData = json.loads(content)
         print jsonData['msg'] 
 

@@ -9,6 +9,8 @@ import config
 import re
 import os
 import base64
+import logging
+logger = logging.getLogger("log") 
 class SendMsger :
     def __init__(self,session):
         self.headers = session.headers
@@ -31,13 +33,16 @@ class SendMsger :
             code = result["code"]
             if code == "A00006":
                 pid = result["data"]["pics"]["pic_1"]["pid"]
-                print u'image upload ok--->',name
+                info = '<------------------image ' + name +' upload ok------------------>'
+                logger.info (info)
                 return pid
             else :
-                print u'image upload fail----> ',name 
+                info = '<------------------image ' + name +' upload fail------------------>'
+                logger.error(info)
         except Exception as e:
             print e 
-            print u'image upload fail exception----> ',name 
+            info = '<------------------image ' + name +' upload fail exception------------------>'
+            logger.error(info)
         return None
 
     def sendMessge(self , msg, isimage =  False , imagePath= ''):
@@ -83,10 +88,12 @@ class SendMsger :
         jsonData = json.loads(content)
 
         if 'code' not in jsonData:
-            print 'send fail unknown error'
+            info = '<------------------send fail unknown error------------------>'
+            logger.error(info)
             return False
         if jsonData['code'] ==  config.SENDSUCC:
-            print 'send ok msg: ',msg 
+            info = '<------------------send ok msg: '+msg +' ------------------>'
+            logger.info(info) 
             return True
         else :
             print jsonData['msg'].split(u'。')[0]+u'。'

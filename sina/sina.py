@@ -15,6 +15,9 @@ import urlparse
 import os 
 from Session import Session
 from bs4 import BeautifulSoup
+import logging
+logger = logging.getLogger("log") 
+
 class Item :
     def __init__(self):
         self.count = 0.0
@@ -41,9 +44,9 @@ class SinaLogin :
         self.headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0'}
         #self.headers = {'User-Agent':'Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0'}
         if not self.getServerData(config.PRELOGINURL):
-            print 'prelogin error'
+            logger.error('prelogin error') 
             exit(config.ERRORCODE)
-        print 'prelogin ok  ------------------>'
+        logger.debug('<------------------prelogin ok------------------>')  
 
     def getServerData(self,preLoginUrl):  
         content = urllib2.urlopen(config.PRELOGINURL).read()  
@@ -51,13 +54,13 @@ class SinaLogin :
         try:  
             data = elementPattern.search(content)
             if not data :
-                print 'sevice NULL'
+                logger.error('sevice NULL')
                 return False
             infor  = data.group(1)
             self.jsonData = json.loads(infor)
             return True 
-        except:  
-            print 'Get severtime error!'  
+        except: 
+            logger.error('Get severtime error!') 
             return False
      
     def getPassword(self): 
@@ -130,10 +133,10 @@ class SinaLogin :
                         data = formData,  
                         headers = headers  
                 )  
-                print 'open read'
+                logger.debug('<------------------open read------------------>')
                 response = self.opener.open(request)  
                 content = response.read()
-                print 'open ok---->'
+                logger.debug('<------------------open ok------------------>')
                 #print content.decode('GB2312')
                 try:
                     dirtyUrl = urlPattern.search(content)
@@ -152,28 +155,26 @@ class SinaLogin :
                     html = self.opener.open(loginUrl).read()
                     content = reUrlPattern.search(html) 
                     if not content :
-                        print 'reurl info error login error'
+                        logger.error('reurl info error login error')  
                         return False
                     feedBack = content.group(1)
                     feedBack.replace('true', 'True').replace('null', 'None')
                     jsonData = json.loads(feedBack)
                     if not jsonData :
-                        print 'error json loin error'
+                        logger.error('error json loin error') 
                         return False
 
                     self.success = jsonData['result']
                     self.userDomain = jsonData['userinfo']['userdomain'] 
-                    print self.userDomain
+                    logger.debug('userDomain: '+self.userDomain) 
                     if self.success:
-                        print "Login success!"
+                        logger.info('<------------------Login success!------------------>')  
                         break
                     else :
-                        print 'unkonwn error' 
+                        logger.error('unkonwn error' ) 
                         continue 
                 except Exception as e:  
-                    print e
-                    print 'Login error!'  
-                    return False  
+                    logger.error('Login error!') 
 
             self.uniqueid = jsonData['userinfo']['uniqueid']
             mainUrl = 'http://weibo.com' + '/u/' + jsonData['userinfo']['uniqueid'] + '/home' + self.userDomain 

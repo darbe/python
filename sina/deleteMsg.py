@@ -11,6 +11,8 @@ from bs4 import BeautifulSoup
 from Session import Session
 from item import WeiboItem
 import sys
+import logging
+logger = logging.getLogger("log") 
 reload(sys)
 sys.setdefaultencoding('utf8')
 class DeleteMsger :
@@ -41,13 +43,14 @@ class DeleteMsger :
     def deleteAll(self):
         self.findAllMid()
         for weibo in self.weibos:
-            print 'delete ',weibo.mid
+            info = '<------------------delete '+weibo.mid+' ------------------>'
+            logger.info(info)
             self.deleteMsg(weibo.mid)
             time.sleep(1)
 
     
     def findAllMid(self):
-        print 'first page -------------------'
+        logger.debug('<------------------first page------------------>')
         self.findMid()
         self.loadCurrentLeft('0')
         self.loadCurrentLeft('1')
@@ -56,12 +59,13 @@ class DeleteMsger :
         #for i in range(2,2):
             if i > self.totalPage:
                 break
-            print '-------------------', i ,'-------------------'
+            info = '<------------------'+str(i)+'------------------>'
+            logger.debug (info)
             self.findPage(str(i))
             self.loadOtherLeft(str(i),'0')
             self.loadOtherLeft(str(i),'1')
-        
-        print 'you  have ' ,len(self.weibos), 'weibos' 
+        info = 'you  have ' + str(len(self.weibos)) + ' weibos'
+        logger.info(info) 
     def findPage(self,pageID):
         pageUrl = 'http://weibo.com/p/100505'+self.uniqueid+'/home?is_search=0&visible=0&is_all=1&is_tag=0&profile_ftype=1&page='+pageID+'#feedtop'
         headers = self.headers
@@ -138,7 +142,7 @@ class DeleteMsger :
                 )  
         response = self.opener.open(request) 
         content = response.read()
-        #print content
+        #print '****',content
         jsonData = json.loads(content)
         html = jsonData['data']
         ofile = open('json.data','w+')
@@ -148,7 +152,11 @@ class DeleteMsger :
             index = html.find('currentPage')
             index = html.find('=',index)
             index0 = html.find('&',index)
-            print '---', html[index+1:index0]
+            pages =  html[index+1:index0].strip()
+            if len(pages) == 0:
+                pages = '0'
+            info = 'you  have ' + pages+ ' pages'
+            logger.debug(info) 
             if self.totalPage == 0:
                 index = html.find('countPage',index0)
                 index = html.find('=',index)
@@ -191,6 +199,7 @@ class DeleteMsger :
         Pattern = re.compile('FM.view\(\{([^\}]+)\}\)')
         soup = BeautifulSoup(content,'html.parser')
         elements = soup.find_all('script')
+        html = ''
         for ele in elements:
             text = ele.get_text()
             if '''"domid":"Pl_Official_MyProfileFeed__22"''' in text :
