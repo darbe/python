@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- 
 ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 def base62_encode(num, alphabet=ALPHABET):
@@ -96,4 +97,5 @@ def mid_to_url(midint):
     result.reverse()
     return ''.join(result)
 
-print mid_to_url(4044579365261598)
+print mid_to_url(4045277616670359)
+ #5563680406 好女孩也流氓

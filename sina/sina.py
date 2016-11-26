@@ -181,9 +181,9 @@ class SinaLogin :
             request = urllib2.Request(mainUrl)  
             response = self.opener.open(request)  
             text = response.read() 
-            ofile = open("index.html","w+")  
-            ofile.write(text)  
-            ofile.close() 
+            #ofile = open("index.html","w+")  
+            #ofile.write(text)  
+            #ofile.close() 
             return True
     def constrcutSession(self):
         session = Session(self.headers,self.userDomain,self.uniqueid,self.opener)

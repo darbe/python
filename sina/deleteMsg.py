@@ -220,12 +220,16 @@ class DeleteMsger :
         for div in divs:
             if 'mid' not in div.attrs:
                 continue
+            num = re.compile('\d+')
             mid = div.attrs['mid']
+            ouid = div.attrs['tbinfo'] 
+            ouid = num.findall(ouid)[0]
             #left = mid.find('=')
             #right = mid.find('\\',left)
             #print mid
             #mid = mid[left+1:right]
             num = re.compile('\d+')
+           
             mid = num.findall(mid)[0]
             info = div.find('div',attrs = {'class':WB_from}).get_text()
             info.strip('\t\n ')
