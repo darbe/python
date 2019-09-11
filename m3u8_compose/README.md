@@ -1,6 +1,8 @@
 背景：通过QQ浏览器下载之后，有一个m3u8文件以及和一个隐藏文件夹，里面是ts视频，并不是我们想要的mp4格式。
+
 Background: After downloading through QQ browser, there is an m3u8 file and a hidden folder, 
 which contains ts video, not the MP4 format we want.
+
 步骤：
 1. 将手机中的隐藏文件夹恢复成可见模式，即将文件前面的那个点去掉
 2. 将你所希望转换的所有视频的m3u8文件和其相应的文件夹拷贝到电脑某个目录。
