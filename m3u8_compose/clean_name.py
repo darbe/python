@@ -55,7 +55,6 @@ def clean_file_name(file_name):
         .replace("】","_").replace("～","_") \
         .replace("~","_").replace(" ","_") \
         .replace(" ","_")
-    #print file_name
     return file_name
 
 
