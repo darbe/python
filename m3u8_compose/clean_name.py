@@ -4,9 +4,6 @@ import time
 import os
 import sys
 import subprocess
-#file_name = "当时的sdsおはようございますbbbbb!@#$%^&*(){}【】「「」|dddd～@#\%……&***（）-+——+「」|：“？》《\~    ～\":><?~aaaa"
-#ile_name = "在线播放 - 043019_841 ローションエロエロくねくねダンス〜あいら - sss视频 sss.txt"
-#print os.getcwd()
 
 def mv_files():
     dir_name = time.strftime('%Y-%m-%d',time.localtime(time.time()))
