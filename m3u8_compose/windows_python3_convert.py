@@ -53,6 +53,6 @@ def compose_video(file_path):
         cmd = """ffmpeg -allowed_extensions ALL -protocol_whitelist "file,http,crypto,tcp" -i """ + file_name_in_complete_new + """  -c copy """ + file_name_out_complete
         os.system(cmd)
         print("process " , file_name_in_complete, " to ", file_name_out_complete , "done ...")
-        os.remove(file_name_in_complete_new)
+        #os.remove(file_name_in_complete_new)
 compose_video("C:\\Users\\dabin\\Downloads\\video")
             
